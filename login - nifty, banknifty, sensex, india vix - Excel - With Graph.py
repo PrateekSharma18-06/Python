@@ -26,7 +26,6 @@ import ctypes
 
 import webbrowser
 
-ns = SimpleNamespace()
 
 def enable_ansi_support():
     if os.name == 'nt':  # Check if the OS is Windows
@@ -46,23 +45,6 @@ def time_fun():
     ttime = ttime.strftime("%H:%M:%S")
     return ttime
 
-def time_fun2():
-    """Update time in plot01 every second."""
-    global ns  # ns stores shared state
-
-    # Update the time
-    ttime2 = datetime.now().time().replace(microsecond=0)
-    ttime2 = ttime2.strftime("%H:%M:%S")
-
-    # Update the time in time_label2
-    ns.time_label2.setText(ttime2)
-
-    # Adjust the position of time_label2 dynamically
-    x_range2, y_range2 = ns.plot01.viewRange()
-    ns.time_label2.setPos(
-        x_range2[0] + (x_range2[1] - x_range2[0]) * 0.12,  # 12% from left
-        y_range2[1] - (y_range2[1] - y_range2[0]) * 0.05   # 5% from top
-    )
 
 code=None
 
@@ -653,8 +635,7 @@ def one_time(expiry_names):
 ttime = None
 
 def update(dfp,xx):
-    global ns, ttime
-    
+
     ns = SimpleNamespace(**xx)
 
     ttime = time_fun()
@@ -1224,10 +1205,9 @@ QTimer.singleShot(0, call)
 
 
 # Start timer
-time.sleep(2)
-timer = QTimer()
-timer.timeout.connect(time_fun2)
-timer.start(1000)
+# timer = QTimer()
+# timer.timeout.connect(time_fun2)
+# timer.start(1000)
 
 # Connect the keyPressEvent function to the window
 win.keyPressEvent = keyPressEvent
